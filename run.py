@@ -122,10 +122,8 @@ def get_llama_response(content_instruct, model_id="meta-llama/Llama-3.2-3B-Instr
     messages = [
         {"role": "user", "content": content_instruct},
     ]
-    generator = llama_pipeline(
-        model=model_id, device="cuda", torch_dtype=torch.bfloat16
-    )
-    generation = generator(
+
+    generation = llama_pipeline(
         messages, do_sample=True, temperature=0.01, max_new_tokens=1000
     )
     model_output = generation[0]["generated_text"][-1]["content"]
