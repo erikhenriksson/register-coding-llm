@@ -140,6 +140,10 @@ model_id = "gpt-4o-mini"
 if len(sys.argv) > 1:
     model_id = sys.argv[1]
 
+if "llama" in model_id:
+    from huggingface_hub import login
+
+    login(token=os.getenv("HF_ACCESS_TOKEN", ""))
 
 # Iterate over each language
 for lang in languages:
