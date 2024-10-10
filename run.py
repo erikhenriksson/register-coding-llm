@@ -1,5 +1,8 @@
 import json
 import os
+
+os.environ["HF_HOME"] = ".hf/hf_home"
+
 import re
 import gzip
 import csv
