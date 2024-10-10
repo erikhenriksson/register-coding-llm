@@ -16,10 +16,6 @@ csv.field_size_limit(sys.maxsize)
 from openai import OpenAI
 import prompt_core_complex_discrete as prompt_core
 
-# Define the access token for OpenAI
-access_token = os.getenv("OPENAI_ACCESS_TOKEN", "")
-client = OpenAI()
-
 labels_structure = {
     "MT": [],
     "LY": [],
@@ -144,6 +140,11 @@ if "llama" in model_id:
     from huggingface_hub import login
 
     login(token=os.getenv("HF_API_KEY", ""))
+
+elif "gpt" in model_id:
+    # Define the access token for OpenAI
+    access_token = os.getenv("OPENAI_ACCESS_TOKEN", "")
+    client = OpenAI()
 
 # Iterate over each language
 for lang in languages:
