@@ -133,6 +133,11 @@ def get_response(content, model_id="gpt-4o-mini"):
 languages = ["en", "fi", "fr", "sv", "tr"]
 model_id = "gpt-4o-mini"
 
+# get model from sys argv 1
+if len(sys.argv) > 1:
+    model_id = sys.argv[1]
+
+
 # Iterate over each language
 for lang in languages:
     file_path = f"../../multilingual-CORE/{lang}/train.tsv.gz"
