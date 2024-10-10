@@ -106,7 +106,7 @@ def get_llama_response(content_instruct, model_id="meta-llama/Llama-3.2-3B-Instr
     generation = generator(
         messages, do_sample=True, temperature=0.01, max_new_tokens=1000
     )
-    model_output = generation[0]["generated_text"][-1].content
+    model_output = generation[0]["generated_text"][-1]["content"]
 
     return model_output
 
