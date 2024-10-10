@@ -16,6 +16,26 @@ csv.field_size_limit(sys.maxsize)
 from openai import OpenAI
 import prompt_core_complex_discrete as prompt_core
 
+# Define the languages to process
+languages = ["en", "fi", "fr", "sv", "tr"]
+model_id = "gpt-4o-mini"
+
+# get model from sys argv 1
+if len(sys.argv) > 1:
+    model_id = sys.argv[1]
+
+if "llama" in model_id:
+    from huggingface_hub import login
+
+    login(token=os.getenv("HF_API_KEY", ""))
+
+    llama_pipeline = pipeline(model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+
+elif "gpt" in model_id:
+    # Define the access token for OpenAI
+    access_token = os.getenv("OPENAI_ACCESS_TOKEN", "")
+    client = OpenAI()
+
 labels_structure = {
     "MT": [],
     "LY": [],
@@ -102,7 +122,9 @@ def get_llama_response(content_instruct, model_id="meta-llama/Llama-3.2-3B-Instr
     messages = [
         {"role": "user", "content": content_instruct},
     ]
-    generator = pipeline(model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+    generator = llama_pipeline(
+        model=model_id, device="cuda", torch_dtype=torch.bfloat16
+    )
     generation = generator(
         messages, do_sample=True, temperature=0.01, max_new_tokens=1000
     )
@@ -127,24 +149,6 @@ def get_response(content, model_id="gpt-4o-mini"):
 
     return response
 
-
-# Define the languages to process
-languages = ["en", "fi", "fr", "sv", "tr"]
-model_id = "gpt-4o-mini"
-
-# get model from sys argv 1
-if len(sys.argv) > 1:
-    model_id = sys.argv[1]
-
-if "llama" in model_id:
-    from huggingface_hub import login
-
-    login(token=os.getenv("HF_API_KEY", ""))
-
-elif "gpt" in model_id:
-    # Define the access token for OpenAI
-    access_token = os.getenv("OPENAI_ACCESS_TOKEN", "")
-    client = OpenAI()
 
 # Iterate over each language
 for lang in languages:
