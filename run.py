@@ -194,10 +194,11 @@ for lang in languages:
                 "text": text,
             }
 
-            # Write the output row to the JSONL file
-            json.dump(output_row, f_out, ensure_ascii=False)
+            # Open file in append mode and write the output row to the JSONL file
             with open(output_path, "a", encoding="utf-8") as f_out:
+                json.dump(output_row, f_out, ensure_ascii=False)
                 f_out.write("\n")
+
             processed += 1
 
     print(f"Processed and saved data for language: {lang}")
