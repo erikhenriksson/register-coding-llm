@@ -167,6 +167,11 @@ for lang in languages:
         for _ in range(labeled_lines):
             next(tsv_reader, None)
 
+        # check if file exists, if not create it
+        if not os.path.exists(output_path):
+            with open(output_path, "w", encoding="utf-8") as f_out:
+                pass
+
         # Open output file in append mode
         with open(output_path, "a", encoding="utf-8") as f_out:
             # Process each row
