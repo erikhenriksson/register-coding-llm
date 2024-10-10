@@ -144,7 +144,7 @@ if len(sys.argv) > 1:
 # Iterate over each language
 for lang in languages:
     file_path = f"../multilingual-CORE/{lang}/train.tsv.gz"
-    output_path = f"{lang}/train_{model_id}.jsonl"
+    output_path = f"{lang}/train_{model_id.replace('/', '_')}.jsonl"
     limit = 100
     processed = 0
 
