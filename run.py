@@ -100,20 +100,14 @@ def get_openai_response(content_instruct, model_id="gpt-4o-mini"):
 
 
 def get_llama_response(content_instruct, model_id="meta-llama/Llama-3.2-3B-Instruct"):
-    pipe = pipeline(
-        "text-generation",
-        model=model_id,
-        torch_dtype=torch.bfloat16,
-        device_map="auto",
-    )
     messages = [
         {"role": "user", "content": content_instruct},
     ]
-    outputs = pipe(
-        messages,
-        max_new_tokens=1000,
+    generator = pipeline(model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+    generation = generator(
+        messages, do_sample=False, temperature=0.01, max_new_tokens=1000
     )
-    model_output = outputs[0]["generated_text"][-1]
+    model_output = generation[0]["generated_text"][-1].content
 
     return model_output
 
