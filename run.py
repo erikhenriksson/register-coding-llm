@@ -177,28 +177,27 @@ for lang in languages:
             with open(output_path, "w", encoding="utf-8") as f_out:
                 pass
 
-        # Open output file in append mode
-        with open(output_path, "a", encoding="utf-8") as f_out:
-            # Process each row
-            for row in tsv_reader:
-                if processed >= limit:
-                    break
-                label = row[0]
-                text = row[1][:5000]  # Trim text to 5000 characters
+        # Process each row
+        for row in tsv_reader:
+            if processed >= limit:
+                break
+            label = row[0]
+            text = row[1][:5000]  # Trim text to 5000 characters
 
-                # Generate LLM label from the text
-                llm_label = get_response(text, model_id)
+            # Generate LLM label from the text
+            llm_label = get_response(text, model_id)
 
-                # Create dictionary for output row
-                output_row = {
-                    "label": format_labels(label),
-                    "llm_label": llm_label,
-                    "text": text,
-                }
+            # Create dictionary for output row
+            output_row = {
+                "label": format_labels(label),
+                "llm_label": llm_label,
+                "text": text,
+            }
 
-                # Write the output row to the JSONL file
-                json.dump(output_row, f_out, ensure_ascii=False)
+            # Write the output row to the JSONL file
+            json.dump(output_row, f_out, ensure_ascii=False)
+            with open(output_path, "a", encoding="utf-8") as f_out:
                 f_out.write("\n")
-                processed += 1
+            processed += 1
 
     print(f"Processed and saved data for language: {lang}")
