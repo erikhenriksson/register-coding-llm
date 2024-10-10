@@ -143,7 +143,7 @@ if len(sys.argv) > 1:
 if "llama" in model_id:
     from huggingface_hub import login
 
-    login(token=os.getenv("HF_ACCESS_TOKEN", ""))
+    login(token=os.getenv("HF_API_KEY", ""))
 
 # Iterate over each language
 for lang in languages:
