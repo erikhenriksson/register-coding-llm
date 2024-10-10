@@ -29,7 +29,9 @@ if "llama" in model_id:
 
     login(token=os.getenv("HF_API_KEY", ""))
 
-    llama_pipeline = pipeline(model=model_id, device="cuda", torch_dtype=torch.bfloat16)
+    llama_pipeline = pipeline(
+        model=model_id, device="cuda", torch_dtype=torch.bfloat16, device_map="auto"
+    )
 
 elif "gpt" in model_id:
     # Define the access token for OpenAI
@@ -172,6 +174,7 @@ for lang in languages:
 
         # Skip lines that have already been processed
         for _ in range(labeled_lines):
+            processed += 1
             next(tsv_reader, None)
 
         # check if file exists, if not create it
